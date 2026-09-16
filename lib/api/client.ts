@@ -1,4 +1,10 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+// Server Components/route handlers call Rails directly (no browser
+// involved, so no cookie policy to work around). The browser instead calls
+// this app's own origin at a relative path, proxied to Rails by
+// next.config.ts's rewrite — see that file for why (third-party cookie
+// blocking on the frontend/backend's separate domains).
+const API_BASE_URL =
+  typeof window === "undefined" ? (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001") : "";
 
 /**
  * Matches BACKEND_RULES.md §6's error envelope: { error: { code, message, details } }.

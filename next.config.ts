@@ -1,6 +1,30 @@
 import type { NextConfig } from "next";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+
 const nextConfig: NextConfig = {
+  // Proxies browser-initiated /api/v1/* calls through this app's own origin
+  // to the Rails backend, instead of the browser calling Render directly.
+  // Frontend (Vercel) and backend (Render) are different registrable
+  // domains, so the httpOnly auth cookie Rails sets is a third-party cookie
+  // from the browser's perspective — modern Chrome/Safari block those by
+  // default even with SameSite=None; Secure set correctly (confirmed via
+  // the request's own `sec-fetch-storage-access: none` header). Proxying
+  // makes the cookie first-party: the browser only ever talks to its own
+  // origin, and this rewrite forwards the request (and relays the
+  // Set-Cookie response back) server-side, where browser cookie policy
+  // doesn't apply. Server Components and proxy.ts already call Rails
+  // directly and are unaffected (no browser involved, no policy to work
+  // around) — only lib/api/client.ts's browser-side fetch needs to route
+  // through this.
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: `${BACKEND_URL}/api/v1/:path*`,
+      },
+    ];
+  },
   images: {
     // Next.js 16 blocks remote images whose hostname resolves to a private/
     // loopback IP by default (SSRF protection) — "localhost" resolves to
