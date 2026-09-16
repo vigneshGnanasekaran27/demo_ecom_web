@@ -7,7 +7,6 @@ const shopLinks = [
 ];
 
 const supportLinks = [
-  { href: "/complaints", label: "Raise a complaint" },
   { href: "/login", label: "Sign in" },
   { href: "/register", label: "Create account" },
 ];
