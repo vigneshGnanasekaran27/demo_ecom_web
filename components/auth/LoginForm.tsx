@@ -37,7 +37,17 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex w-full max-w-sm flex-col gap-4">
+    // method="post" is a fallback, not the real submit path (onSubmit's
+    // preventDefault + authApi.login handle that) — it only matters if a
+    // click reaches the browser before hydration attaches the handler.
+    // Without it the browser's default GET submission would put the email
+    // and password in the URL/history/server logs.
+    <form
+      onSubmit={handleSubmit}
+      method="post"
+      noValidate
+      className="flex w-full max-w-sm flex-col gap-4"
+    >
       <div className="flex flex-col gap-1">
         <label htmlFor="email" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
           Email

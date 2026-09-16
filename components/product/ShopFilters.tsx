@@ -20,6 +20,18 @@ export function ShopFilters({
 }) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
+  // Tracks the initialQuery value `query` was last synced to, so a change to
+  // the URL-driven prop (category select, Clear, pagination, browser
+  // back/forward — anything other than this component's own submit) can be
+  // detected and applied during render, without an Effect (react.dev's
+  // "adjusting state when a prop changes" pattern). Without this, an
+  // unsubmitted edit left in the box after one of those navigations would
+  // keep showing text that no longer matches the actually-applied filters.
+  const [syncedQuery, setSyncedQuery] = useState(initialQuery);
+  if (initialQuery !== syncedQuery) {
+    setSyncedQuery(initialQuery);
+    setQuery(initialQuery);
+  }
 
   const navigate = (next: { q?: string; category?: string }) => {
     const params = new URLSearchParams();

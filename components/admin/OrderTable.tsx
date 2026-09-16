@@ -150,7 +150,13 @@ function OrderRow({
               <button
                 type="button"
                 disabled={!selected || isPending}
-                onClick={() => selected && mutate({ orderId: order.id, status: selected })}
+                onClick={() =>
+                  selected &&
+                  mutate(
+                    { orderId: order.id, status: selected },
+                    { onSuccess: () => setSelected("") }
+                  )
+                }
                 className="rounded-md bg-zinc-900 px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isPending ? "Updating..." : "Update"}

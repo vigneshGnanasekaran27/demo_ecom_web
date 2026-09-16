@@ -113,7 +113,7 @@ export function OrderQueue({
             ))}
           </select>
           {data && (
-            <BulkReceiptButton status={statusFilter || undefined} stage={stage} from={from} to={to} count={data.orders.length} />
+            <BulkReceiptButton status={statusFilter || undefined} stage={stage} from={from} to={to} count={data.meta.total} />
           )}
         </div>
       </div>

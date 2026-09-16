@@ -84,7 +84,10 @@ export function ShippingForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="grid grid-cols-2 gap-4">
+    // method="post": see LoginForm's identical form tag for why — a
+    // pre-hydration click must never fall back to a GET that puts the
+    // customer's name/phone/address in the URL/history/server logs.
+    <form onSubmit={handleSubmit} method="post" noValidate className="grid grid-cols-2 gap-4">
       {FIELDS.map((field) => (
         <div key={field.name} className={field.span === "full" ? "col-span-2" : "col-span-2 sm:col-span-1"}>
           <label htmlFor={field.name} className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">

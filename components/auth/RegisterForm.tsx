@@ -47,7 +47,15 @@ export function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex w-full max-w-sm flex-col gap-4">
+    // method="post": see LoginForm's identical form tag for why — a
+    // pre-hydration click must never fall back to a GET that puts the
+    // password in the URL/history/server logs.
+    <form
+      onSubmit={handleSubmit}
+      method="post"
+      noValidate
+      className="flex w-full max-w-sm flex-col gap-4"
+    >
       <div className="flex flex-col gap-1">
         <label htmlFor="full_name" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
           Full name

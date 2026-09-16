@@ -73,7 +73,11 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
           )}
 
           <div className="mt-6">
-            <AddToCartButton productId={product.id} inStock={product.stock_quantity > 0} />
+            <AddToCartButton
+              productId={product.id}
+              inStock={product.stock_quantity > 0}
+              stockQuantity={product.stock_quantity}
+            />
           </div>
         </div>
       </div>

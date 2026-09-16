@@ -10,8 +10,17 @@ import { ApiError } from "@/lib/api/client";
  * detail page. Loading/error/success states per FRONTEND_RULES.md §9 —
  * never silently pretends to succeed.
  */
-export function AddToCartButton({ productId, inStock }: { productId: number; inStock: boolean }) {
+export function AddToCartButton({
+  productId,
+  inStock,
+  stockQuantity,
+}: {
+  productId: number;
+  inStock: boolean;
+  stockQuantity: number;
+}) {
   const [quantity, setQuantity] = useState(1);
+  const atStockLimit = quantity >= stockQuantity;
   const { mutate, isPending, isSuccess, isError, error, reset } = useAddToCart();
 
   const handleAdd = () => {
@@ -41,9 +50,10 @@ export function AddToCartButton({ productId, inStock }: { productId: number; inS
           <span className="w-8 text-center text-sm text-zinc-900 dark:text-zinc-50">{quantity}</span>
           <button
             type="button"
-            onClick={() => setQuantity((q) => q + 1)}
-            disabled={!inStock}
+            onClick={() => setQuantity((q) => Math.min(stockQuantity, q + 1))}
+            disabled={!inStock || atStockLimit}
             aria-label="Increase quantity"
+            title={atStockLimit ? "No more stock available" : undefined}
             className="px-3 py-2 text-sm text-zinc-700 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-300"
           >
             +
