@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useOrders } from "@/lib/orders/useOrders";
 import { formatPriceCents } from "@/lib/format";
 import { ORDER_STATUS_LABELS } from "@/types/order";
+import { StaggerGroup, StaggerItem } from "@/components/animations/StaggerReveal";
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" });
 
@@ -50,12 +51,12 @@ export default function OrdersPage() {
       )}
 
       {data && data.orders.length > 0 && (
-        <ul className="mt-8 space-y-3">
+        <StaggerGroup className="mt-8 space-y-3">
           {data.orders.map((order) => (
-            <li key={order.id}>
+            <StaggerItem key={order.id}>
               <Link
                 href={`/orders/${order.id}`}
-                className="flex items-center justify-between rounded-lg border border-zinc-200 p-4 transition-colors hover:border-brand-500 dark:border-zinc-800 dark:hover:border-brand-400"
+                className="flex items-center justify-between rounded-lg border border-zinc-200 p-4 transition-colors hover:border-brand-500 hover:shadow-md hover:shadow-zinc-900/5 dark:border-zinc-800 dark:hover:border-brand-400 dark:hover:shadow-black/30"
               >
                 <div>
                   <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{order.order_number}</p>
@@ -71,9 +72,9 @@ export default function OrdersPage() {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">{ORDER_STATUS_LABELS[order.order_status]}</p>
                 </div>
               </Link>
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </StaggerGroup>
       )}
     </main>
   );

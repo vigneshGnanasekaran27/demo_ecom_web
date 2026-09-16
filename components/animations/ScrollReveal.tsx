@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef } from "react";
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 
 /**
@@ -11,15 +12,20 @@ import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
  * Respects prefers-reduced-motion via Framer Motion's useReducedMotion:
  * reduces to a near-instant plain fade with no movement, per
  * FRONTEND_RULES.md §16.
+ *
+ * forwardRef so callers that need the section element itself (e.g.
+ * scroll-linked parallax via useScroll) can get a real DOM ref — a plain
+ * function component would silently drop it.
  */
-export function ScrollReveal({
-  children,
-  ...props
-}: HTMLMotionProps<"section">) {
+export const ScrollReveal = forwardRef<HTMLElement, HTMLMotionProps<"section">>(function ScrollReveal(
+  { children, ...props },
+  ref,
+) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.section
+      ref={ref}
       initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -32,4 +38,4 @@ export function ScrollReveal({
       {children}
     </motion.section>
   );
-}
+});

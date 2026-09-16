@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { getSpiceVisualById } from "@/lib/spice-visuals";
-import { SquircleShift } from "@/components/landing/SquircleShift";
+import { HeroVideoBackground } from "@/components/landing/HeroVideoBackground";
 
 const turmeric = getSpiceVisualById("turmeric", "turmeric");
 const chilli = getSpiceVisualById("chilli", "chilli");
@@ -32,33 +32,6 @@ const dustMotes = Array.from({ length: DUST_COUNT }, (_, i) => ({
   drift: (seededRandom(i * 3 + 3) - 0.5) * 40,
 }));
 
-// Scales a hex colour's RGB channels toward black.
-function darken(hex: string, factor: number): string {
-  const n = parseInt(hex.slice(1), 16);
-  const r = Math.round(((n >> 16) & 255) * factor);
-  const g = Math.round(((n >> 8) & 255) * factor);
-  const b = Math.round((n & 255) * factor);
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
-}
-
-// Mixes a hex colour toward white by `amount` (0-1).
-function lighten(hex: string, amount: number): string {
-  const n = parseInt(hex.slice(1), 16);
-  const r = Math.round(((n >> 16) & 255) + (255 - ((n >> 16) & 255)) * amount);
-  const g = Math.round(((n >> 8) & 255) + (255 - ((n >> 8) & 255)) * amount);
-  const b = Math.round((n & 255) + (255 - (n & 255)) * amount);
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
-}
-
-// Squircle Shift's colour is a single dark-yellow-to-light-yellow gradient
-// (not the earlier 4-colour spice rotation) — both stops anchored on the
-// turmeric token so it stays brand-consistent. Per follow-up feedback the
-// dark stop is lightened (0.55 → 0.7 toward turmeric's base tone, i.e.
-// less intense/near-black) and the light stop is pushed further toward
-// white than turmeric's own glow tint, for a brighter, softer overall
-// gradient while keeping the same smooth wave-driven transition.
-const SQUIRCLE_COLORS: [string, string] = [darken(turmeric.from, 0.7), lighten(turmeric.glow, 0.35)];
-
 /**
  * Hero's ambient background layer — an Aurora-style continuously flowing
  * gradient wash (the technique behind libraries like React Bits'/Aceternity's
@@ -66,11 +39,11 @@ const SQUIRCLE_COLORS: [string, string] = [darken(turmeric.from, 0.7), lighten(t
  * animated through several waypoints, plus a slight rotate/scale breathe, on
  * a long infinite loop — adapted here as our own implementation with the
  * project's brand/spice palette, not a copy of any specific library's
- * source), a full-bleed morphing squircle grid (see SquircleShift.tsx),
- * soft drifting colour blobs, and a sparse field of slowly rising dust
- * motes for texture. No new dependency (AI_RULES.md §2/§15) — Framer
- * Motion/CSS for every layer except SquircleShift, which is a small
- * Canvas-2D drawing loop (not WebGL/three.js).
+ * source), soft drifting colour blobs, and a sparse field of slowly rising
+ * dust motes for texture, layered over HeroVideoBackground's full-bleed
+ * video (UIX-02 — replaces the earlier SquircleShift canvas grid, removed
+ * per the user's explicit request). No new dependency (AI_RULES.md §2/§15)
+ * — Framer Motion/CSS only.
  *
  * Dynamic-imported with ssr:false by Hero.tsx so it never blocks initial
  * paint. Renders fully static (no motion at all) when the OS/browser has
@@ -81,12 +54,14 @@ export function HeroScene() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      <HeroVideoBackground shouldReduceMotion={!!shouldReduceMotion} />
+
       {/* Aurora gradient wash — layered gradients drift through several
           waypoints (not just back-and-forth) plus a slight rotate/scale
           breathing, so the light reads as continuously flowing rather than
           panning once and settling. */}
       <motion.div
-        className="absolute inset-[-30%] opacity-[0.22] blur-3xl"
+        className="absolute inset-[-30%] opacity-[0.14] blur-3xl"
         style={{
           backgroundImage: `radial-gradient(38% 45% at 20% 30%, ${turmeric.glow}, transparent 60%),
             radial-gradient(32% 40% at 75% 20%, ${chilli.glow}, transparent 60%),
@@ -105,23 +80,18 @@ export function HeroScene() {
         transition={shouldReduceMotion ? undefined : { duration: 38, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Squircle Shift — a full-bleed grid of morphing squircle outlines,
-          see SquircleShift.tsx for why this is a Canvas-2D recreation
-          rather than the real `@reactbits-starter/squircle-shift-tw`. */}
-      <SquircleShift colors={SQUIRCLE_COLORS} shouldReduceMotion={!!shouldReduceMotion} />
-
       {/* Soft drifting colour blobs */}
       {blobs.map((blob, index) =>
         shouldReduceMotion ? (
           <div
             key={index}
-            className="absolute rounded-full opacity-30 blur-3xl"
+            className="absolute rounded-full opacity-20 blur-3xl"
             style={{ width: blob.size, height: blob.size, top: blob.top, left: blob.left, backgroundColor: blob.color }}
           />
         ) : (
           <motion.div
             key={index}
-            className="absolute rounded-full opacity-30 blur-3xl"
+            className="absolute rounded-full opacity-20 blur-3xl"
             style={{ width: blob.size, height: blob.size, top: blob.top, left: blob.left, backgroundColor: blob.color }}
             animate={{ y: [0, -20, 0], x: [0, 15, 0], scale: [1, 1.08, 1] }}
             transition={{ duration: blob.duration, repeat: Infinity, ease: "easeInOut" }}

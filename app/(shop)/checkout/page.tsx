@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCart, CART_QUERY_KEY } from "@/lib/cart/useCart";
@@ -31,7 +32,11 @@ export default function CheckoutPage() {
 
   if (order) {
     return (
-      <main className="mx-auto w-full max-w-xl px-4 py-12 text-center">
+      <motion.main
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="mx-auto w-full max-w-xl px-4 py-12 text-center">
         <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Complete Payment</h1>
         <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
           Order <span className="font-mono">{order.order_number}</span> is ready — pay securely via Razorpay.
@@ -63,7 +68,7 @@ export default function CheckoutPage() {
             }}
           />
         </div>
-      </main>
+      </motion.main>
     );
   }
 

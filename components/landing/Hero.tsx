@@ -1,8 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { HeroCardStack } from "@/components/landing/HeroCardStack";
 import type { ProductListItem } from "@/types/product";
@@ -18,11 +19,17 @@ const HeroScene = dynamic(() => import("./HeroScene").then((mod) => mod.HeroScen
 // values passed below.
 const textContainer: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.22, delayChildren: 0.15 } },
 };
 const textItem: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 22, scale: 0.98, filter: "blur(4px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+  },
 };
 
 /**
@@ -36,14 +43,26 @@ const textItem: Variants = {
  */
 export function Hero({ products }: { products: ProductListItem[] }) {
   const shouldReduceMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  // Egress parallax as the user scrolls past the hero: text drifts up/fades
+  // faster than the card stack, which drifts up slower — a depth cue rather
+  // than everything moving in lockstep.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const textY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -60]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const stackY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -24]);
 
   return (
     <ScrollReveal className="relative overflow-hidden border-b border-zinc-200 bg-gradient-to-b from-zinc-50 to-white dark:border-zinc-800 dark:from-zinc-950 dark:to-black">
       <HeroScene />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 px-4 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16 lg:py-28">
+      <div
+        ref={ref}
+        className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 px-4 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16 lg:py-28"
+      >
         <motion.div
           className="flex flex-col items-start gap-6"
+          style={{ y: textY, opacity: textOpacity }}
           variants={textContainer}
           initial={shouldReduceMotion ? "show" : "hidden"}
           animate="show"
@@ -83,7 +102,14 @@ export function Hero({ products }: { products: ProductListItem[] }) {
           </motion.div>
         </motion.div>
 
-        <HeroCardStack products={products} />
+        <motion.div style={{ y: stackY }}>
+          <motion.div
+            animate={shouldReduceMotion ? undefined : { y: [0, -12, 0], scale: [1, 1.015, 1], rotate: [0, 0.6, 0] }}
+            transition={shouldReduceMotion ? undefined : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <HeroCardStack products={products} />
+          </motion.div>
+        </motion.div>
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-6xl justify-center pb-8">

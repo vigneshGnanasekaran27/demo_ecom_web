@@ -10,7 +10,20 @@ import { useAddToCart } from "@/lib/cart/useCart";
  * component so ProductCard itself can stay a Server Component
  * (FRONTEND_RULES.md §1).
  */
-export function QuickAddButton({ productId, inStock }: { productId: number; inStock: boolean }) {
+const SIZE_CLASSES = {
+  sm: "px-3 py-1.5 text-xs",
+  lg: "px-6 py-3 text-sm",
+};
+
+export function QuickAddButton({
+  productId,
+  inStock,
+  size = "sm",
+}: {
+  productId: number;
+  inStock: boolean;
+  size?: "sm" | "lg";
+}) {
   const { mutate, isPending, isSuccess, isError, reset } = useAddToCart();
 
   const handleClick = (event: React.MouseEvent) => {
@@ -27,7 +40,7 @@ export function QuickAddButton({ productId, inStock }: { productId: number; inSt
       type="button"
       onClick={handleClick}
       disabled={!inStock || isPending}
-      className="flex-1 rounded-md bg-brand-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-brand-500/40"
+      className={`w-full rounded-md bg-brand-500 font-medium text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-brand-500/40 ${SIZE_CLASSES[size]}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span

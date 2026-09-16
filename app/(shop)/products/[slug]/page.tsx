@@ -3,6 +3,7 @@ import { productsApi } from "@/lib/api/products";
 import { ApiError } from "@/lib/api/client";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartButton } from "@/components/product/AddToCartButton";
+import { DETAIL_VIDEO_URL, getProductVideo } from "@/lib/product-videos";
 import type { ProductDetail } from "@/types/product";
 
 // Server Component for content/SEO. Product price/stock/description is the
@@ -39,7 +40,12 @@ export default async function ProductDetailPage(props: PageProps<"/products/[slu
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="grid gap-8 md:grid-cols-2">
-        <ProductGallery images={product.images} productName={product.name} productSlug={product.slug} />
+        <ProductGallery
+          images={product.images}
+          productName={product.name}
+          productSlug={product.slug}
+          videoUrl={getProductVideo(product.slug) ? DETAIL_VIDEO_URL : null}
+        />
 
         <div>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">{product.category.name}</p>

@@ -29,7 +29,7 @@ const PALETTE: SpiceVisual[] = [
   { id: "coriander", label: "Coriander Olive", from: "#4a4a1a", to: "#8a8a3a", glow: "#bcbc72" },
 ];
 
-function hashString(input: string): number {
+export function hashString(input: string): number {
   let hash = 0;
   for (let i = 0; i < input.length; i++) {
     hash = (hash * 31 + input.charCodeAt(i)) | 0;
