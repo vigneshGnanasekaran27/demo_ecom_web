@@ -111,21 +111,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
-      <header className="border-b border-zinc-200 bg-white/80 backdrop-blur print:hidden dark:border-zinc-800 dark:bg-zinc-950/80">
+    <div className="flex min-h-screen flex-col bg-zinc-50">
+      <header className="border-b border-zinc-200 bg-white/80 backdrop-blur print:hidden">
         <div className="flex w-full items-center justify-between px-5 py-3.5">
-          <Link href="/admin/orders" className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+          <Link href="/admin/orders" className="text-sm font-semibold text-zinc-900">
             Demo<span className="text-brand-500">Ecom</span>
-            <span className="ml-2 rounded-full bg-brand-500/10 px-2 py-0.5 text-[11px] font-medium tracking-wide text-brand-600 dark:text-brand-400">
+            <span className="ml-2 rounded-full bg-brand-500/10 px-2 py-0.5 text-[11px] font-medium tracking-wide text-brand-600">
               ADMIN
             </span>
           </Link>
           <div className="flex items-center gap-4">
-            {user && <span className="text-sm text-zinc-500 dark:text-zinc-400">{user.full_name}</span>}
+            {user && <span className="text-sm text-zinc-500">{user.full_name}</span>}
             <button
               type="button"
               onClick={handleLogout}
-              className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
             >
               Log out
             </button>
@@ -138,7 +138,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           animate={{ width: collapsed ? 64 : 208 }}
           initial={false}
           transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
-          className={`flex-shrink-0 border-r border-zinc-200 bg-white/60 py-4 print:hidden dark:border-zinc-800 dark:bg-zinc-950/40 ${
+          className={`flex-shrink-0 border-r border-zinc-200 bg-white/60 py-4 print:hidden ${
             hydrated ? "" : "invisible"
           }`}
         >
@@ -159,8 +159,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     title={collapsed ? item.label : undefined}
                     className={`relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
                       isActive
-                        ? "text-brand-600 dark:text-brand-400"
-                        : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                        ? "text-brand-600"
+                        : "text-zinc-600 hover:bg-zinc-100"
                     }`}
                   >
                     {item.icon}
@@ -176,7 +176,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               type="button"
               onClick={toggleCollapsed}
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className={`h-4.5 w-4.5 flex-shrink-0 transition-transform ${collapsed ? "rotate-180" : ""}`}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />

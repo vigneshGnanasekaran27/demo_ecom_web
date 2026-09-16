@@ -16,7 +16,7 @@ export default function AdminOrderReceiptPage({ params }: { params: Promise<{ id
   if (isPending) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-8" aria-busy="true">
-        <div className="h-96 animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+        <div className="h-96 animate-pulse rounded-xl bg-zinc-100" />
       </div>
     );
   }
@@ -24,7 +24,7 @@ export default function AdminOrderReceiptPage({ params }: { params: Promise<{ id
   if (isError || !order) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center">
-        <p className="text-zinc-500 dark:text-zinc-400">Unable to load this receipt.</p>
+        <p className="text-zinc-500">Unable to load this receipt.</p>
       </div>
     );
   }

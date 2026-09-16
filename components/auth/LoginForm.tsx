@@ -23,9 +23,11 @@ export function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      await authApi.login({ email, password });
+      const user = await authApi.login({ email, password });
       await refreshSession();
-      router.push(searchParams.get("redirect") || "/");
+      // Admins land straight on the dashboard rather than the storefront —
+      // the "Admin" header link only exists as a way back in from elsewhere.
+      router.push(searchParams.get("redirect") || (user.role === "admin" ? "/admin/orders" : "/"));
       router.refresh();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");

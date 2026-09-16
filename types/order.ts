@@ -100,6 +100,21 @@ export const ORDER_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 // offers the "move it forward" actions relevant to that stage, not
 // cancellation), not a permission boundary. The backend's only real gate
 // is Orders::UpdateStatus's own state-machine legality check.
+// The plain (unscoped) Orders tab's own job is reviewing/confirming and
+// cancelling — the pack -> dispatch -> deliver chain is offered from the
+// Dispatch/Delivery tabs instead, so an order never has two different tabs
+// each offering the same "advance status" action for the same step.
+export const ORDERS_TAB_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  pending_payment: ["confirmed", "cancelled"],
+  confirmed: ["cancelled"],
+  processing: ["cancelled"],
+  packed: ["cancelled"],
+  dispatched: [],
+  out_for_delivery: [],
+  delivered: [],
+  cancelled: [],
+};
+
 export const DISPATCH_STAGE_STATUSES: OrderStatus[] = ["confirmed", "processing", "packed"];
 export const DISPATCH_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   pending_payment: [],

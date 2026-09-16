@@ -279,7 +279,7 @@ export function AssistantAvatarGuide() {
       {ringRect && (
         <div
           aria-hidden
-          className={`pointer-events-none fixed z-40 rounded-2xl ring-2 ring-brand-400 ring-offset-2 ring-offset-transparent transition-opacity duration-300 ${
+          className={`pointer-events-none fixed z-40 rounded-2xl ring-1 ring-brand-400/60 transition-opacity duration-300 ${
             ringVisible ? "opacity-100" : "opacity-0"
           }`}
           style={{ top: ringRect.top, left: ringRect.left, width: ringRect.width, height: ringRect.height }}

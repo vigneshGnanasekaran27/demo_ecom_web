@@ -140,7 +140,12 @@ export function ProductSpotlight({ product }: { product: ProductDetail }) {
                 View Product
               </Link>
               <div className="w-40">
-                <QuickAddButton productId={product.id} inStock={product.stock_quantity > 0} size="lg" />
+                <QuickAddButton
+                  productId={product.id}
+                  inStock={product.stock_quantity > 0}
+                  stockQuantity={product.stock_quantity}
+                  size="lg"
+                />
               </div>
             </div>
           </StaggerItem>

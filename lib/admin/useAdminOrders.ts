@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { adminApi, type AdminOrderListParams, type ReceiptsParams } from "@/lib/api/admin";
+import { adminApi, type AbandonedListParams, type AdminOrderListParams, type ReceiptsParams } from "@/lib/api/admin";
 import type { OrderStatus } from "@/types/order";
 
 export function useAdminOrders(params: AdminOrderListParams) {
@@ -12,10 +12,10 @@ export function useAdminOrders(params: AdminOrderListParams) {
   });
 }
 
-export function useAbandonedCarts() {
+export function useAbandonedCarts(params: AbandonedListParams = {}) {
   return useQuery({
-    queryKey: ["admin", "abandoned"],
-    queryFn: () => adminApi.listAbandoned(),
+    queryKey: ["admin", "abandoned", params],
+    queryFn: () => adminApi.listAbandoned(params),
     retry: false,
   });
 }

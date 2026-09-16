@@ -18,6 +18,13 @@ export interface AdminOrderListParams {
   stage?: AdminStage;
   from?: string;
   to?: string;
+  page?: number;
+  per_page?: number;
+}
+
+export interface AbandonedListParams {
+  page?: number;
+  per_page?: number;
 }
 
 export interface ReceiptsParams {
@@ -38,13 +45,24 @@ function buildQuery(params: Record<string, string | undefined>): string {
 
 export const adminApi = {
   listOrders: async (params: AdminOrderListParams = {}): Promise<AdminOrderListResult> => {
-    const qs = buildQuery({ status: params.status, stage: params.stage, from: params.from, to: params.to });
+    const qs = buildQuery({
+      status: params.status,
+      stage: params.stage,
+      from: params.from,
+      to: params.to,
+      page: params.page ? String(params.page) : undefined,
+      per_page: params.per_page ? String(params.per_page) : undefined,
+    });
     const { data, meta } = await apiClient<AdminOrderListItem[]>(`/api/v1/admin/orders${qs}`);
     return { orders: data, meta: meta ?? { page: 1, per_page: data.length, total: data.length } };
   },
 
-  listAbandoned: async (): Promise<AbandonedCartListResult> => {
-    const { data, meta } = await apiClient<AdminOrderDetail[]>("/api/v1/admin/orders/abandoned");
+  listAbandoned: async (params: AbandonedListParams = {}): Promise<AbandonedCartListResult> => {
+    const qs = buildQuery({
+      page: params.page ? String(params.page) : undefined,
+      per_page: params.per_page ? String(params.per_page) : undefined,
+    });
+    const { data, meta } = await apiClient<AdminOrderDetail[]>(`/api/v1/admin/orders/abandoned${qs}`);
     return { orders: data, meta: meta ?? { page: 1, per_page: data.length, total: data.length } };
   },
 

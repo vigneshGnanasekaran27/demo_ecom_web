@@ -102,7 +102,7 @@ export function ProductCard({
         </Link>
 
         <div className="border-t border-zinc-100 p-3 dark:border-zinc-800">
-          <QuickAddButton productId={product.id} inStock={!isOutOfStock} />
+          <QuickAddButton productId={product.id} inStock={!isOutOfStock} stockQuantity={product.stock_quantity} />
         </div>
       </div>
     </TiltCard>

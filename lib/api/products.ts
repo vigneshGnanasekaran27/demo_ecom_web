@@ -4,6 +4,8 @@ import type { ProductDetail, ProductListItem } from "@/types/product";
 export interface ProductListParams {
   page?: number;
   per_page?: number;
+  q?: string;
+  category?: string;
 }
 
 export interface ProductListResult {
@@ -16,6 +18,8 @@ export const productsApi = {
     const query = new URLSearchParams();
     if (params.page) query.set("page", String(params.page));
     if (params.per_page) query.set("per_page", String(params.per_page));
+    if (params.q) query.set("q", params.q);
+    if (params.category) query.set("category", params.category);
     const qs = query.toString();
 
     const { data, meta } = await apiClient<ProductListItem[]>(`/api/v1/products${qs ? `?${qs}` : ""}`);
