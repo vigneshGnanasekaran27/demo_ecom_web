@@ -7,6 +7,7 @@ import { ProductSpotlight } from "@/components/landing/ProductSpotlight";
 import { FeaturedProducts } from "@/components/landing/FeaturedProducts";
 import { WhyChooseUs } from "@/components/landing/WhyChooseUs";
 import { FinalCta } from "@/components/landing/FinalCta";
+import { AssistantAvatarGuide } from "@/components/landing/AssistantAvatarGuide";
 import type { ProductDetail } from "@/types/product";
 
 // The spotlight always shows this specific product (rather than an array
@@ -69,6 +70,7 @@ export default async function Home() {
       <FeaturedProducts products={products} />
       <WhyChooseUs />
       <FinalCta />
+      <AssistantAvatarGuide />
     </main>
   );
 }

@@ -13,7 +13,10 @@ import { SectionVideoBackground } from "@/components/landing/SectionVideoBackgro
  */
 export function FinalCta() {
   return (
-    <ScrollReveal className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-700 to-brand-500">
+    <ScrollReveal
+      id="explore"
+      className="relative scroll-mt-20 overflow-hidden bg-gradient-to-br from-brand-900 via-brand-700 to-brand-500"
+    >
       <SectionVideoBackground src="/videos/demovideo2.mp4" />
       <div
         aria-hidden

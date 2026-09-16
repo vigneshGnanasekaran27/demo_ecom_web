@@ -55,7 +55,7 @@ export function ProductSpotlight({ product }: { product: ProductDetail }) {
   }, [inView, videoUrl, shouldReduceMotion]);
 
   return (
-    <ScrollReveal className="mx-auto w-full max-w-6xl px-4 py-20 sm:py-28">
+    <ScrollReveal id="spotlight" className="mx-auto w-full max-w-6xl scroll-mt-20 px-4 py-20 sm:py-28">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <div ref={mediaRef} className="relative mx-auto w-full max-w-md motion-safe:animate-float">
           <div

@@ -97,7 +97,11 @@ export function WhyChooseUs() {
   ];
 
   return (
-    <ScrollReveal ref={sectionRef} className="relative overflow-hidden bg-zinc-950 py-24 sm:py-32">
+    <ScrollReveal
+      ref={sectionRef}
+      id="why-us"
+      className="relative scroll-mt-20 overflow-hidden bg-zinc-950 py-24 sm:py-32"
+    >
       <SectionVideoBackground src="/videos/demovideo3.mp4" />
       {/* Cinematic grade: darkens the raw footage and vignettes the edges so
           white text stays legible everywhere, not just over a scrim strip. */}

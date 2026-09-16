@@ -155,7 +155,10 @@ export function CategoryShowcase({
   if (categories.length === 0) return null;
 
   return (
-    <ScrollReveal className="border-t border-zinc-200 bg-zinc-50 py-10 dark:border-zinc-800 dark:bg-zinc-900/40 sm:py-14">
+    <ScrollReveal
+      id="categories"
+      className="scroll-mt-20 border-t border-zinc-200 bg-zinc-50 py-10 dark:border-zinc-800 dark:bg-zinc-900/40 sm:py-14"
+    >
       <div className="mx-auto w-full max-w-6xl px-4">
         <h2 className="mb-1 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
           Shop by category

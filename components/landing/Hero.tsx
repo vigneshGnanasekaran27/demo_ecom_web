@@ -53,7 +53,10 @@ export function Hero({ products }: { products: ProductListItem[] }) {
   const stackY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -24]);
 
   return (
-    <ScrollReveal className="relative overflow-hidden border-b border-zinc-200 bg-gradient-to-b from-zinc-50 to-white dark:border-zinc-800 dark:from-zinc-950 dark:to-black">
+    <ScrollReveal
+      id="hero"
+      className="relative overflow-hidden border-b border-zinc-200 bg-gradient-to-b from-zinc-50 to-white dark:border-zinc-800 dark:from-zinc-950 dark:to-black"
+    >
       <HeroScene />
 
       <div
